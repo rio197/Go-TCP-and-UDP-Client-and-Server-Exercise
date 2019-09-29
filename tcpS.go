@@ -8,6 +8,7 @@ import (
         "os"
         "strings"
         "time"
+	"./handleError"
 )
 
 func main() {
@@ -19,10 +20,11 @@ func main() {
 
         PORT := ":" + arguments[1]
         l, err := net.Listen("tcp", PORT)
-        if err != nil {
-                fmt.Println(err)
-                return
-        }
+	handleError.HandleError(err)
+//        if err != nil {
+//                fmt.Println(err)
+//                return
+//        }
         defer l.Close()
 
         c, err := l.Accept()
