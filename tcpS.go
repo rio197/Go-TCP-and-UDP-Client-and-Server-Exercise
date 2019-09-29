@@ -19,27 +19,19 @@ func main() {
         }
 
         PORT := ":" + arguments[1]
-        l, err := net.Listen("tcp", PORT)
+        
+	l, err := net.Listen("tcp", PORT)
 	handleError.HandleError(err)
-//        if err != nil {
-//                fmt.Println(err)
-//                return
-//        }
         defer l.Close()
 
         c, err := l.Accept()
-        if err != nil {
-                fmt.Println(err)
-                return
-        }
+	handleError.HandleError(err) 
 
         for {
                 netData, err := bufio.NewReader(c).ReadString('\n')
-                if err != nil {
-                        fmt.Println(err)
-                        return
-                }
-                if strings.TrimSpace(string(netData)) == "STOP" {
+         	handleError.HandleError(err) 
+
+               if strings.TrimSpace(string(netData)) == "STOP" {
                         fmt.Println("Exiting TCP server!")
                         return
                 }

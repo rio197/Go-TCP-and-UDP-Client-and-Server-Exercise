@@ -20,10 +20,6 @@ func main() {
         CONNECT := arguments[1]
         c, err := net.Dial("tcp", CONNECT)
  	handleError.HandleError(err)       
-//	if err != nil {
-//                fmt.Println(err)
-//                return
-//       }
 
         for {
                 reader := bufio.NewReader(os.Stdin)

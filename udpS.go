@@ -24,16 +24,10 @@ func main() {
         PORT := ":" + arguments[1]
 
         s, err := net.ResolveUDPAddr("udp4", PORT)
-        if err != nil {
-                fmt.Println(err)
-                return
-        }
+	handleError.HandleError(err)
 
         connection, err := net.ListenUDP("udp4", s)
-        if err != nil {
-                fmt.Println(err)
-                return
-        }
+	handleError.HandleError(err)
 
         defer connection.Close()
         buffer := make([]byte, 1024)
@@ -41,6 +35,8 @@ func main() {
 
         for {
                 n, addr, err := connection.ReadFromUDP(buffer)
+		handleError.HandleError(err)
+
                 fmt.Print("-> ", string(buffer[0:n-1]))
 
                 if strings.TrimSpace(string(buffer[0:n])) == "STOP" {
@@ -51,9 +47,6 @@ func main() {
                 data := []byte(strconv.Itoa(random(1, 1001)))
                 fmt.Printf("data: %s\n", string(data))
                 _, err = connection.WriteToUDP(data, addr)
-                if err != nil {
-                        fmt.Println(err)
-                        return
-                }
-        }
+		handleError.HandleError(err)
+       }
 }

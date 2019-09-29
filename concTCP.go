@@ -16,10 +16,7 @@ func handleConnection(c net.Conn) {
         fmt.Print(".")
         for {
                 netData, err := bufio.NewReader(c).ReadString('\n')
-                if err != nil {
-                        fmt.Println(err)
-                        return
-                }
+		handleError.HandleError(err)
 
                 temp := strings.TrimSpace(string(netData))
                 if temp == "STOP" {
@@ -41,19 +38,14 @@ func main() {
 
         PORT := ":" + arguments[1]
         l, err := net.Listen("tcp4", PORT)
-        if err != nil {
-                fmt.Println(err)
-                return
-        }
-        defer l.Close()
+	handleError.HandleError(err)
+	defer l.Close()
 
         for {
                 c, err := l.Accept()
-                if err != nil {
-                        fmt.Println(err)
-                        return
-                }
-                go handleConnection(c)
+		handleError.HandleError(err) 
+
+               	go handleConnection(c)
                 count++
         }
 }
